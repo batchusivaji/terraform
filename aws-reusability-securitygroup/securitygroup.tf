@@ -1,3 +1,7 @@
+resource "aws_vpc" "ntier_vpc" {
+  cidr_block = var.vpc_network_cidr
+  
+}
 resource "aws_security_group" "websg" {
   name        = var.web_sg_config.name
   description = var.web_sg_config.description

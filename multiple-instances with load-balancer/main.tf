@@ -150,7 +150,7 @@ resource "aws_instance" "nginx" {
 }
 
 resource "aws_instance" "tomcat9" {
-  instance_type               = "t2.micro"
+  instance_type               = "t2.medium"
   associate_public_ip_address = "true"
   ami                         = "ami-0eb260c4d5475b901"
   key_name                    = "compute"
@@ -169,9 +169,19 @@ resource "aws_instance" "tomcat9" {
 
 resource "aws_lb_target_group" "target-group" {
   name     = "target-group"
-  port     = 80
+  port = 80
   protocol = "HTTP"
   vpc_id   = aws_vpc.ntier.id
+  health_check {
+    enabled = true
+    healthy_threshold = 3
+    interval = 6
+    matcher = "200-499"
+    path = "/"
+    protocol = "HTTP"
+    timeout = 5
+    unhealthy_threshold = 2
+  }
 }
 
 
@@ -215,7 +225,7 @@ resource "aws_lb" "loadbalancer" {
 
 ### create Load Balancer Listener 
 
-resource "aws_lb_listener" "lb-listener" {
+resource "aws_lb_listener" "lb-listener-1" {
   load_balancer_arn = aws_lb.loadbalancer.arn
   port              = 80
   protocol          = "HTTP"
@@ -225,6 +235,16 @@ resource "aws_lb_listener" "lb-listener" {
   }
 }
 
+resource "aws_lb_listener" "lb-listener-2" {
+  load_balancer_arn = aws_lb.loadbalancer.arn
+  port              = 8080
+  protocol          = "HTTP"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.target-group.arn
+  }
+}
 
 
+  
 
