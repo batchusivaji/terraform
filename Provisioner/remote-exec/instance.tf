@@ -13,7 +13,7 @@ resource "aws_instance""application" {
     aws_security_group.application-sg
   ]
 }
-
+## Null Resource
 resource "null_resource" "ubuntu-server-application" {
   connection {
     type = "ssh"
