@@ -2,7 +2,7 @@ TERRAFORM
 -----------
 
 ### how to maintaining version in terraform
-![refer here](D:\terraform\required_version)
+![referhere](required_version/version.tf)
 ![preview](images/terraform1.png)
 ![preview](images/terraform2.png)
 
