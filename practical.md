@@ -17,7 +17,7 @@ TERRAFORM
 
 ### FROM TERRAFORM
 [[click here]](vpc)
-Now we have to follow below command
+* Now we have to follow below command
 ### terraform init : Intitalising the provider
 ![preview](images/terraform3.png)
 ![preview](images/terraform4.png)
