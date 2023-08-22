@@ -82,8 +82,10 @@ TERRAFORM
 ## VARIBLES
 
 ### how to pass the varible
-[[click here]](subnets/multiple_subnets_1)
 [[click here]](subnets/multiple_subnets_variables/)
+
+![preview](images/terraform42.png)
+![preview](images/terraform43.png)
 
 
 
