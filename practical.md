@@ -83,6 +83,7 @@ TERRAFORM
 
 ### how to pass the varible
 [[click here]](subnets/multiple_subnets_1)
+[[click here]](subnets/multiple_subnets_variables/)
 
 
 
