@@ -6,7 +6,7 @@ TERRAFORM
 ![preview](images/terraform1.png)
 ![preview](images/terraform2.png)
 
-### how to create a REGION,VPC and SUBNET
+### how to create a VPC and SUBNET
 #### manul steps
 ![preview](images/terraform15.png)
 ![preview](images/terraform16.png)
@@ -16,25 +16,7 @@ TERRAFORM
 ![preview](images/terraform20.png)
 
 ### FROM TERRAFORM
-```yml
-
-provider "aws" {
-  region = "eu-west-2"
-}
-resource "aws_vpc" "vpc" {
-  cidr_block = "192.168.0.0/16"
-  tags = {
-    Name = "vpc"
-  }
-}
-
-resource "aws_subnet" "subnet" {
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = "192.168.0.0/24"
-  tags = {
-    Name = "subnet"
-  }
-}
+[[click here]](vpc)
 
 ```
 Now we have to follow below command
