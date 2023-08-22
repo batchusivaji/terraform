@@ -52,9 +52,8 @@ TERRAFORM
 ![preview](images/terraform27.png)
 ### successfully creating three Subnents with attached  After we were created VPC
 ![preview](images/terraform28.png)
-
 ### from TERRAFORM
-
+[[click here]](subnets/multiple_subnets/)
 #### Order of execution in `terraform init,fmt,validate,plan,apply`
 
 ![preview](images/terraform29.png)
@@ -83,151 +82,8 @@ TERRAFORM
 ## VARIBLES
 
 ### how to pass the varible
-####  main.tf
-```yml 
-provider "aws" {
-  region = var.region
-}
+[[click here]](subnets/multiple_subnets_1)
 
-resource "aws_vpc" "ntier" {
-    cidr_block = var.ntier_vpc_range
-    tags = {
-        Name = var.ntier_vpc_name
-    }
-  
-}
-
-
-
-resource "aws_subnet" "subnet1" {
-  vpc_id     = aws_vpc.ntier.id # implicit dependecies
-  cidr_block = var.ntier_sunbet1_range
-  availability_zone = "${var.region}${var.second_availability_zone}"
-  tags = {
-    Name = var.ntier_tag1_name
-  }
-}
-
-resource "aws_subnet" "subnet2" {
-  vpc_id     = aws_vpc.ntier.id  # implicit dependecies
-  cidr_block = var.ntier_subnet2_range
-  availability_zone = "${var.region}${var.second_availability_zone}"
-  tags = {
-    Name = var.ntier_tag2_name
-  }
-}
-
-resource "aws_subnet" "subnet3" {
-  vpc_id     = aws_vpc.ntier.id   # implicit dependecies
-  cidr_block = var.ntier_subnet3_range
-  availability_zone = "${var.region}${var.third_availability_zone}"
-  tags = {
-    Name = var.ntier_tag3_name
-  }
-}
-
-```
-
-#### inputs.tf
-
-```yml
-
-variable "region" {
-    type = string
-    default = "eu-west-2"
-    description = "region to create rources"
-  
-}
-
-variable "ntier_vpc_range" {
-    type = string
-    default = "10.10.0.0/16"
-    
-    description = "Vpc cidr Range"
-  
-}
-
-variable "ntier_sunbet1_range" {
-  
-  type = string
-  default = "10.10.0.0/24"
-  description = "Subnet1 cidr range"
-}
-
-variable "ntier_subnet2_range" {
-    type = string
-    default = "10.10.1.0/24"
-    description = "subnet2 cidr range"
-  
-}
-
-
-variable "ntier_subnet3_range" {
-    type = string
-    default = "10.10.2.0/24"
-    description = "subnet3 cidr range"
-  
-}
-
-variable "ntier_vpc_name" {
-    type = string
-    default = "vpc"
-    description = "vpc tag name"
-  }
-
-variable "ntier_tag1_name" {
-    type = string
-    default = "subnet1"
-    description = "subnet1 tag name"
-  
-}
-
-variable "ntier_tag2_name" {
-    type = string
-    default = "subnet2"
-    description = "subnet2 tag name"
-  
-}
-
-variable "ntier_tag3_name" {
-  type = string
-  default = "subnet3"
-  description = "subnet3 tag name"
-}
-
-variable "first_availability_zone" {
-    type = string
-    default = "a"
-  
-}
-
-variable "second_availability_zone" {
-    type = string
-    default = "b"
-  
-}
-
-variable "third_availability_zone" {
-    type = string
-    default = "c"
-  
-}
-
-```
-
-#### values.tf
-
-```yml
-region = "us-east-1"
-ntier_vpc_range = "192.168.0.0/16"
-ntier_sunbet1_range = "192.168.0.0/24"
-ntier_subnet2_range = "192.168.1.0/24"
-ntier_subnet3_range = "192.168.2.0/24"
-
-```
-
-![preview](images/pip1.png)
-![preview](images/pip2.png)
 
 
 
