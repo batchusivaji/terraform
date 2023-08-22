@@ -2,18 +2,7 @@ TERRAFORM
 -----------
 
 ### how to maintaining version in terraform
-
-```yml
-terraform {
-  required_version = ">=1.0.0"
-  required_providers {
-    aws =  {
-      source  = "hashicorp/aws"
-      version = ">= 5.5.0"
-   }
-  }
-}
-```
+![refer here]https://github.com/batchusivaji000/terraform/tree/main/required_version
 ![preview](images/terraform1.png)
 ![preview](images/terraform2.png)
 

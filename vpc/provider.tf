@@ -1,4 +1,3 @@
-
 terraform {
   required_providers {
     aws = {
@@ -8,7 +7,7 @@ terraform {
   }
   required_version = ">=1.4.0"
   backend "s3" {
-    bucket = "qt-bucket"
+    bucket = "qt-terraform-bucket"
     key = "aws/terraform/qt"
     region = "us-west-2"
     dynamodb_table = "terraformlock"
@@ -17,5 +16,5 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = var.region
-} 
+  region = "us-east-1"
+}
