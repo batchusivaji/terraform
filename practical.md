@@ -17,13 +17,11 @@ TERRAFORM
 
 ### FROM TERRAFORM
 [[click here]](vpc)
-
-```
 Now we have to follow below command
 ### terraform init : Intitalising the provider
 ![preview](images/terraform3.png)
 ![preview](images/terraform4.png)
-### terraform fmt : check the alignment correct ot not
+### terraform fmt : check it alignment correct or not
 ![preview](images/terraform5.png)
 ### terraform validate: your syntax is correct or not
 ![preview](images/terraform6.png)
@@ -55,7 +53,7 @@ Now we have to follow below command
 ### successfully creating three Subnents with attached  After we were created VPC
 ![preview](images/terraform28.png)
 
-### IN TERRAFORM
+### from TERRAFORM
 
 #### Order of execution in `terraform init,fmt,validate,plan,apply`
 
