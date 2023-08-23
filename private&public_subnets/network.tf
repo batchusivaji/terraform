@@ -71,13 +71,13 @@ resource "aws_route_table" "public" {
     count = length(data.aws_subnets.private.ids)
     route_table_id = aws_route_table.private.id
     subnet_id = data.aws_subnets.private.ids[count.index]
-   depends_on = [ aws_subnet.ntier-subnets ,aws_subnet.ntier-subnets]
+   depends_on = [ aws_subnet.ntier-subnets ,aws_route_table.private]
       }
 
   resource "aws_route_table_association" "public" {
     count = length(data.aws_subnets.public.ids)
     route_table_id = aws_route_table.public.id
     subnet_id = data.aws_subnets.public.ids[count.index]
-    depends_on = [ aws_route_table.public,aws_subnet.ntier-subnets ]
+    depends_on = [ aws_route_table.public,aws_route_table.public ]
    
   }
