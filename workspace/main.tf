@@ -5,7 +5,7 @@ provider "aws" {
 resource "aws_vpc" "ntier-vpc" {
   cidr_block = var.ntier-vpc
   tags = {
-    Name = ntier-vpc
+    Name = format("ntier-%s",terraform.workspace)
     Env = terraform.workspace
   }
 }
