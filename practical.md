@@ -88,8 +88,8 @@ TERRAFORM
 ![preview](images/terraform43.png)
 
 
-## Lenth function
-[[click here]](count function)
+### Count function
+[[click here]](countfunction)
 
 
 
