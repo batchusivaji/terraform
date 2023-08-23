@@ -89,7 +89,7 @@ TERRAFORM
 
 
 ### Count function
-![[click here]](countfunction)
+[[click here]](count_function)
 
 
 
