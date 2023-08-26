@@ -21,6 +21,14 @@ application_sg_config = {
             protocol = "tcp"
             cidr_block = "0.0.0.0/0"
         },
+        {
+            type = "ingress"
+            from_port = 80
+            to_port = 80
+            protocol = "tcp"
+            cidr_block = "0.0.0.0/0"
+        },
+        
          {
             type = "ingress"
             from_port = 8080
