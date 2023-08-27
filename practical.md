@@ -88,30 +88,28 @@ TERRAFORM
 ![preview](images/terraform43.png)
 
 
-### Count function
+## Count function
 [[click here]](count_function)
 
 ![preview](images/terraform44.png)
 
-### length fuction and cidr subnet
+## length fuction and cidr subnet
 [[click here]](length_function&cidrsubnet_network_function)
 
 ![preview](images/terraform45.png)
 
-### create private and public subnets
+## create private and public subnets
 [[click here]](private&public_subnets)
 
 ![preview](images/terraform46.png)
 
-### security group reusability
+## security group reusability
 [[click here]](aws-reusability-securitygroup)
 
 ![preview](images/terraform47.png)
 
-### create instance
+## create instance
 #### manual steps
-[[click here]](instance)
-
 ![preview](images/terraform47.png)
 ![preview](images/terraform48.png)
 ![preview](images/terraform49.png)
@@ -123,6 +121,8 @@ TERRAFORM
 
 
 ### from terraform
+[[click here]](instance)
+
 ![preview](images/terraform57.png)
 
 ## create Data base instance
@@ -136,4 +136,11 @@ TERRAFORM
 
 
 ### from terraform 
+
+
+## Backend 
+
+## workspace
+
+
 
