@@ -30,8 +30,9 @@ provisioner "file" {
   source = "./nginx.yaml"
   destination = "/home/ubuntu/nginx.yaml"
 }
+
 provisioner "file" {
-  source = "./apache2.sh"
+  source = "./tomcat9.yaml"
   destination = "/home/ubuntu/tomcat9.yaml"
 }
 
@@ -51,23 +52,18 @@ provisioner "file" {
  source = "./inventory"
  destination = "/home/ubuntu/inventory"
 }
+provisioner "file" {
+  source = "./dependency.sh"
+  destination = "/home/ubuntu/dependency.sh"
+}
 
  provisioner "remote-exec" {
-  inline = [ 
-"sudo apt update", 
-"sudo apt-add-repository ppa:ansible/ansible -y",
-"sudo apt install ansible -y" ,
-"chmod +x /home/ubuntu/tomcat9.yaml", 
-"echo '''ubuntu@localhost''' > inventory" ,
-"chmod 400 /home/ubuntu/id_rsa",
-"chmod 400 /home/ubuntu/dependency.sh",
-"ssh-keyscan -H localhost >> ~/.ssh/known_hosts",
-"ansible -i inventory -m ping all --private-key /home/ubuntu/id_rsa",
-#export ANSIBLE_SSH_ARGS="-o UserKnownHostsFile=/dev/null -o king=no" ansible -i inventory -m ping all --private-key /home/ubuntu/id_rsa ,
-#"ansible-playbook -i inventory tomcat9.yaml"
-"ansible-playbook -i inventory nginx.yaml"
+  inline = [
+"chmod 700 dependency.sh",
+"./dependency.sh",
+"ansible-playbook -i inventory nginx.yaml",
+"ansible-playbook -i inventory tomcat9.yaml"
   ]  
-
  }
 triggers = {
    version = var.application-network-info.version

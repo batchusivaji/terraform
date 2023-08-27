@@ -1,6 +1,6 @@
 ---
 - name: install tomcat9 server
-  hosts: all
+  hosts: localhost
   become: yes
   tasks:
     - name: install tomcat9
