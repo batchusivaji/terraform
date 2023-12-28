@@ -5,7 +5,7 @@ what is terraform
 -------------------
 Terraform is an open-source infrastructure as a code tool created by HashiCorp, that lets you provision, build, change, and version cloud and on-prem resources. It lets you define both Cloud and on-prem resources in human-readable configuration files that you can version, reuse, and share.
 ### infrastructure as a code
- with the code we can manage the infrastructure
+ with the code or provision we can manage the infrastructure
   
 ## terraform commands
 ----------------------

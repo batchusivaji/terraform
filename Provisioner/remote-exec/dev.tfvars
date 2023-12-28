@@ -7,7 +7,7 @@ public_key_path = "~/.ssh/id_rsa.pub"
 private_key_path = "~/.ssh/id_rsa"
 instance_size = "t2.micro"
 ami_id = "ami-0c9c942bd7bf113a2"
-version = 2
+version = 1
 
 }
 application_sg_config = {
