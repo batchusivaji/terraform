@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "github.com/batchusivaji/modules/resources/vpc/"
+  source = "github.com/batchusivaji/modules/resources/vpc"
   provider_info = {
     region_useast1 = "ap-northeast-1"
     region_useast2 = "ap-northeast-2"
