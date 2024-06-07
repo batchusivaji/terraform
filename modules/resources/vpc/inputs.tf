@@ -1,25 +1,25 @@
 variable "network_info" {
   type = object({
-    name1 = string
-    name2 = string
-    cidr_range_1 = string
-    cidr_range_2 = string
-    region = string
-    private_subnets = list(object({
-      subnet1_cidr_range = string
-      azs = list(string)
-      name= string
-    }))
-    public_subnets = list(object({
-    subnet2_cidr_range = string
-    name= string
-    azs = list(string)
-    cidr_range = string
-  }))
-  igw_name=string
-  rt_name=string
-  public_key_path = string
+    public_vpc_info = object({
+      vpc_tags              = string
+      vpc_cidr_block        = string
+      subnet_cidr_block     = string
+      subnet_tags           = string
+      availability_zone     = string
+    })
+    private_vpc_info = object({
+      vpc_tags              = string
+      vpc_cidr_block        = string
+      subnet_cidr_block     = list(string)
+      subnet_tags           = list(string)
+      availability_zones    = list(string)
+    })
   })
 }
 
-
+variable "provider_info" {
+  type = object({
+    region_useast1 = string
+    region_useast2 = string 
+  })
+}

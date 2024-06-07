@@ -1,76 +1,195 @@
 module "vpc" {
-    source = "github.com/terraform/modules/resources/vpc"
-    network_info = {
-        name = "vpc"
-        cidr = "10.0.0.0/16"
+  source = "../resources/vpc/"
+  provider_info = {
+    region_useast1 = "ap-northeast-1"
+    region_useast2 = "ap-northeast-2"
+  }
+  network_info = {
+    public_vpc_info = {
+      vpc_tags              = "public-vpc"
+      vpc_cidr_block        = "10.0.0.0/16"
+      subnet_cidr_block     = "10.0.1.0/24"
+      subnet_tags           = "public-subnet"
+      availability_zone     = "ap-northeast-1a"
     }
-    subnet_info = [{
-        name = "subnet-1"
-        cidr = "10.0.0.0/24"
-        az = "us-east-1a"
-},
-   {
-        name = "subnet-2"
-        cidr = "10.0.1.0/24"
-        az = "us-east-1b"
-    }]
+    private_vpc_info = {
+      vpc_tags              = "private-vpc"
+      vpc_cidr_block        = "10.1.0.0/16"
+      subnet_cidr_block     = ["10.1.1.0/24", "10.1.2.0/24"]
+      subnet_tags           = ["public-subnet-1", "private-subnet-1"]
+      availability_zones    = ["ap-northeast-2a", "ap-northeast-2c"]
+    }
+  }
+}
+provider "aws" {
+  alias  = "us_east_1"
+  region = "ap-northeast-1"
 }
 
-# # create security group
+provider "aws" {
+  alias  = "us_east_2"
+  region = "ap-northeast-2"
+}
 
-# module "securitygroup_info" {
-#   source = "github.com/terraform/modules/resources/securitygroup"
-#   security_group_info = {
-#     name = "sg"
-#     vpc_id = module.vpc.id
-#     inbound_rules = [{
-#         protocol = "tcp"
-#         from_port = 22
-#         to_port = 22
-#         cidr_blocks = ["0.0.0.0/0"]
-#         description = "Allow SSH"
-#     },
-#     {
-#         protocol = "tcp"
-#         from_port = 80
-#         to_port = 80
-#         cidr_blocks = ["0.0.0.0/0"]
-#         description = "Allow HTTP"
-#     }
-#     ]
-#     outbound_rules = [{
-#         from_port = 0
-#         to_port = 0
-#         protocol = "-1"
-#         cidr_blocks = ["0.0.0.0/0"]
-#    }]
-#   }
-# }
-# # create a ami 
-# data "aws_ami" "ubuntu" {
-#   most_recent = true
+# # fetch the vpc's,subnet's
+# data "aws_ami" "amazon_us_east_2" {
+#    provider    = aws.us_east_2
+#    most_recent = true
+#    owners      = ["amazon"]
 
 #   filter {
-#     name = "ami"
-#     values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+#     name   = "name"
+#     values = ["amzn2-ami-hvm-*-x86_64-*"]
 #   }
+
 #   filter {
 #     name   = "virtualization-type"
 #     values = ["hvm"]
 #   }
-#   owners = ["533267075021"]
 # }
-# # create instance
 
-# module "instance" {
-#   source = "github.com/terraform/modules//resource/ec2"
-#   instance_info = {
-#     name = "ec2-1"
-#     ami = data.aws_ami.id
-#     instance_type = "t2.micro"
-#     key_name = "mykey"
-#     subnet_id = module.subnet_info[0].id
-#     associate_public_ip_address = true
-#      security_group_id           = module.security_group_info
+# data "aws_subnets" "us_east_1_subnets" {
+#   provider = aws.us_east_1
+#   filter {
+#     name   = "tag:Name"
+#     values = ["public-subnet"]
+#   }
+# }
+
+# data "aws_vpc" "us_east_2_vpc" {
+#   provider = aws.us_east_2
+#   filter {
+#     name   = "tag:Name"
+#     values = ["private-vpc"]
+#   }
+# }
+
+# data "aws_subnets" "us_east_2_subnets" {
+#   provider = aws.us_east_2
+#   filter {
+#     name   = "tag:Name"
+#     values = ["public-subnet-1", "private-subnet-1"]
+#   }
+# }
+
+
+# Create public security group
+module "public_security_group" {
+  source    = "../resources/security_group/"
+  providers = { aws = aws.us_east_1 }
+  security_group_info = {
+    description       = "open 22 and 80 port within vpc"
+    name              = "public-sg"
+    region            = "ap-northeast-1"
+    vpc_id            = module.vpc.igw_vpc_id
+    inbound_rules     = [{
+      cidr            = "0.0.0.0/0"
+      port            = 22
+      protocol        = "tcp"
+      description     = "open ssh"
+      },
+      {
+        cidr          = "0.0.0.0/0"
+        port          = 80
+        protocol      = "tcp"
+        description   = "open http"
+      }
+    ]
+    outbound_rules    = []
+    allow_all_egress  = true
+  }
+
+  depends_on = [module.vpc]
+}
+
+# Create a private security group to open port 22 within the VPC
+module "private_security_group" {
+  source    = "../resources/security_group/"
+  providers = { aws = aws.us_east_2 }
+  security_group_info = {
+    name              = "private-sg"
+    description       = "open 22 port within vpc"
+    vpc_id            = module.vpc.nat_vpc_id
+    allow_all_egress  = true
+    outbound_rules    = []
+    inbound_rules     = [{
+      cidr            = "192.168.0.0/16"
+      port            = 22
+      protocol        = "tcp"
+      description     = "open 22 port"
+    }]
+  }
+  depends_on = [ module.vpc ]
+}
+
+
+
+data "aws_ami" "amazon_us_east_1" {
+   provider    = aws.us_east_1
+   most_recent = true
+   owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
   }
 }
+
+data "aws_ami" "amazon_us_east_2" {
+   provider    = aws.us_east_2
+   most_recent = true
+   owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+module "instances_us_east_1" {
+  source    = "../resources/ec2/"
+  providers = { aws = aws.us_east_1 }
+
+  instance_info_public = {
+    name                        = "public-ec2"
+    ami                         = data.aws_ami.amazon_us_east_1.id
+    size                        = "t2.micro"
+    key_name                    = aws_key_pair.my_key_pair_region_1.key_name
+    subnet_id                   = module.vpc.public_subnets_igw[0]
+    associate_public_ip_address = true
+    security_group_id           = module.public_security_group.security_group_id
+  }
+  
+  instance_info_private = null
+
+  depends_on = [module.public_security_group, module.vpc]
+}
+
+module "instances_us_east_2" {
+  source    = "../resources/ec2/"
+  providers = { aws = aws.us_east_2 }
+
+  instance_info_private = {
+    name                        = "private-ec2"
+    ami                         = data.aws_ami.amazon_us_east_2.id
+    size                        = "t2.micro"
+    key_name                    = aws_key_pair.my_key_pair_region_2.key_name
+    subnet_id                   = module.vpc.private_subnets_nat[0]
+    associate_public_ip_address = true
+    security_group_id           = module.private_security_group.security_group_id
+  }
+  instance_info_public = null
+}
+
+
+
