@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "github.com/batchusivaji/modules/resources/vpc"
+  source = "github.com/batchusivaji/terraform/modules/resources/vpc"
   provider_info = {
     region_useast1 = "ap-northeast-1"
     region_useast2 = "ap-northeast-2"
@@ -75,7 +75,7 @@ provider "aws" {
 
 # Create public security group
 module "public_security_group" {
-  source    = "github.com/batchusivaji/modules/resources/security_group/"
+  source    = "github.com/batchusivaji/terraform/modules/resources/security_group/"
   providers = { aws = aws.us_east_1 }
   security_group_info = {
     description       = "open 22 and 80 port within vpc"
@@ -104,7 +104,7 @@ module "public_security_group" {
 
 # Create a private security group to open port 22 within the VPC
 module "private_security_group" {
-  source    = "github.com/batchusivaji/modules/resources/security_group/"
+  source    = "github.com/batchusivaji/terraform/modules/resources/security_group/"
   providers = { aws = aws.us_east_2 }
   security_group_info = {
     name              = "private-sg"
@@ -157,7 +157,7 @@ data "aws_ami" "amazon_us_east_2" {
 }
 
 module "instances_us_east_1" {
-  source    = "github.com/batchusivaji/modules/resources/ec2"
+  source    = "github.com/batchusivaji/terraform/modules/resources/ec2"
   providers = { aws = aws.us_east_1 }
 
   instance_info_public = {
@@ -176,7 +176,7 @@ module "instances_us_east_1" {
 }
 
 module "instances_us_east_2" {
-  source    = "github.com/batchusivaji/modules/resources/ec2"
+  source    = "github.com/batchusivaji/terraform/modules/resources/ec2"
   providers = { aws = aws.us_east_2 }
 
   instance_info_private = {
